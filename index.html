@@ -94,6 +94,10 @@
                     <p class="text-gray-500">Layar proyektor: Visi Misi berputar & Quick Count.</p>
                 </div>
             </div>
+            <!-- FOOTER INJECTED -->
+            <div class="absolute bottom-4 w-full text-center pointer-events-none">
+                <p class="text-sm font-semibold text-gray-500">Production by @pagurudan</p>
+            </div>
         </section>
 
         <!-- VIEW 2: ADMIN LOGIN -->
@@ -114,6 +118,10 @@
                     </div>
                     <button type="submit" class="w-full bg-blue-600 hover:bg-blue-700 text-white font-bold py-3 rounded-lg shadow-md transition-colors">Masuk</button>
                 </form>
+            </div>
+            <!-- FOOTER INJECTED -->
+            <div class="absolute bottom-4 w-full text-center pointer-events-none">
+                <p class="text-sm font-semibold text-gray-400">Production by @pagurudan</p>
             </div>
         </section>
 
@@ -136,6 +144,10 @@
                 </nav>
                 <div class="p-4 border-t border-gray-200">
                     <button onclick="doLogout()" class="w-full flex items-center justify-center gap-2 px-4 py-2 bg-red-50 text-red-600 rounded-lg hover:bg-red-100 font-medium transition-colors">Keluar</button>
+                </div>
+                <!-- FOOTER INJECTED -->
+                <div class="p-4 pt-0 text-center pointer-events-none">
+                    <p class="text-xs font-semibold text-gray-400">Production by @pagurudan</p>
                 </div>
             </aside>
 
@@ -160,7 +172,14 @@
                         </div>
                         <div class="flex gap-2 flex-wrap">
                             <button onclick="openFormTambahPemilih()" class="bg-blue-600 text-white px-4 py-2 rounded-lg shadow hover:bg-blue-700 flex items-center gap-2 text-sm font-medium">
-                                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"></path></svg> Tambah Pemilih (On the Spot)
+                                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"></path></svg> Tambah (Satuan)
+                            </button>
+                            <!-- Fitur Tambahan: Upload Massal dan Cetak Kartu -->
+                            <button onclick="openFormUploadMassal()" class="bg-green-600 text-white px-4 py-2 rounded-lg shadow hover:bg-green-700 flex items-center gap-2 text-sm font-medium">
+                                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-8l-4-4m0 0L8 8m4-4v12"></path></svg> Upload Massal
+                            </button>
+                            <button onclick="cetakKartuPemilih()" class="bg-purple-600 text-white px-4 py-2 rounded-lg shadow hover:bg-purple-700 flex items-center gap-2 text-sm font-medium">
+                                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 17h2a2 2 0 002-2v-4a2 2 0 00-2-2H5a2 2 0 00-2 2v4a2 2 0 002 2h2m2 4h6a2 2 0 002-2v-4a2 2 0 00-2-2H9a2 2 0 00-2 2v4a2 2 0 002 2zm8-12V5a2 2 0 00-2-2H9a2 2 0 00-2 2v4h10z"></path></svg> Cetak Kartu PDF
                             </button>
                         </div>
                     </div>
@@ -252,6 +271,10 @@
                     <button type="submit" class="w-full bg-gradient-to-r from-green-500 to-green-600 text-white font-bold py-4 rounded-xl shadow-lg transition-transform active:scale-95 text-lg">Masuk Pemilihan</button>
                 </form>
             </div>
+            <!-- FOOTER INJECTED -->
+            <div class="absolute bottom-6 w-full text-center pointer-events-none z-10">
+                <p class="text-sm font-semibold text-white/70 tracking-wide drop-shadow-md">Production by @pagurudan</p>
+            </div>
         </section>
 
         <!-- VIEW 5: VOTER CASTING (PILIH KANDIDAT) -->
@@ -277,6 +300,10 @@
                 <h2 class="text-3xl font-extrabold text-gray-800 mb-2 text-center">Pilih Kandidat Anda</h2>
                 <p class="text-gray-500 mb-8 text-center max-w-xl">Pelajari visi misi di bawah ini. Klik tombol "COBLOS". Pilihan tidak dapat diubah setelah konfirmasi.</p>
                 <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 w-full max-w-6xl pb-10" id="voter-candidates-grid"></div>
+                <!-- FOOTER INJECTED -->
+                <div class="w-full text-center mt-auto pt-6 pointer-events-none">
+                    <p class="text-sm font-semibold text-gray-400">Production by @pagurudan</p>
+                </div>
             </div>
         </section>
 
@@ -305,7 +332,7 @@
                         <p class="text-2xl font-bold text-yellow-400" id="dash-percentage">0%</p>
                     </div>
                     <button onclick="toggleFullScreen()" class="bg-gray-800 border border-gray-700 p-3 rounded-full hover:bg-gray-700 transition" title="Mode Layar Penuh">
-                        <svg class="w-6 h-6 text-gray-300" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 8V4m0 0h4M4 4l5 5m11-1V4m0 0h-4m4 0l-5 5M4 16v4m0 0h4m-4 0l5-5m11 5l-5-5m5 5v-4m0 4h-4"></path></svg>
+                        <svg class="w-6 h-6 text-gray-300" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 8V4m0 0h4M4 4l5 5m11-1V4m0 0h-4m4 0l5-5m11 5l-5-5m5 5v-4m0 4h-4"></path></svg>
                     </button>
                 </div>
             </header>
@@ -336,6 +363,10 @@
                     <div class="marquee-content" id="dash-marquee-text">Memuat Pengumuman...</div>
                 </div>
             </div>
+            <!-- FOOTER INJECTED -->
+            <div class="absolute bottom-[4.5rem] right-6 pointer-events-none z-30">
+                <p class="text-xs font-semibold text-gray-500 bg-gray-900/60 px-3 py-1 rounded-full backdrop-blur-sm border border-gray-700">Production by @pagurudan</p>
+            </div>
         </section>
     </main>
 
@@ -343,7 +374,7 @@
         /**
          * ============================================================
          * WAJIB DIUBAH!
-         * Ganti URL di bawah dengan URL Web App Apps Script Anda.
+         * Ganti URL di bawah dengan URL Web App Anda setelah deploy.
          * ============================================================
          */
         const APP_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbw-c43NmYNdstivppblgjmaWueMcyIR2poAbk5hFkwDPiIHuQo-y1FbfEZKj8Ms87AmoQ/exec";
@@ -585,7 +616,7 @@
             if(!urlFoto) return showToast("Tunggu hingga indikator foto menyatakan berhasil diunggah!", "error");
             showLoading("Menyimpan...");
             try {
-                const res = await fetchAPI('admin_add_kandidat', { no: parseInt(document.getElementById('f-no').value), name: document.getElementById('f-nama').value, visi: document.getElementById('f-visi').value, misi: document.getElementById('f-misi').value, foto: urlFoto });
+                const res = await fetchAPI('admin_add_kandidat', { no: document.getElementById('f-no').value, name: document.getElementById('f-nama').value, visi: document.getElementById('f-visi').value, misi: document.getElementById('f-misi').value, foto: urlFoto });
                 if(res.success) { closeFormModal(); await fetchAdminData(); showToast("Kandidat ditambahkan!"); }
             } catch (err) { hideLoading(); showToast("Gagal menyimpan data", "error"); }
         }
@@ -616,7 +647,7 @@
             e.preventDefault();
             showLoading("Mengupdate...");
             try {
-                const res = await fetchAPI('admin_edit_kandidat', { rowIndex: rowIndex, no: parseInt(document.getElementById('e-no').value), name: document.getElementById('e-nama').value, visi: document.getElementById('e-visi').value, misi: document.getElementById('e-misi').value, foto: document.getElementById('e-foto-url').value });
+                const res = await fetchAPI('admin_edit_kandidat', { rowIndex: rowIndex, no: document.getElementById('e-no').value, name: document.getElementById('e-nama').value, visi: document.getElementById('e-visi').value, misi: document.getElementById('e-misi').value, foto: document.getElementById('e-foto-url').value });
                 if(res.success) { closeFormModal(); await fetchAdminData(); showToast("Kandidat diupdate!"); }
             } catch (err) { hideLoading(); showToast("Gagal update data", "error"); }
         }
@@ -851,7 +882,7 @@
                 },
                 options: {
                     responsive: true, maintainAspectRatio: false, plugins: { legend: { display: false } },
-                    scales: { y: { beginAtZero: true, grid: { color: 'rgba(75, 85, 99, 0.2)' }, ticks: { font: { size: 14, weight: 'bold' }, stepSize: 1 } }, x: { grid: { display: false }, ticks: { font: { size: 12, weight: 'bold' } } } },
+                    scales: { y: { beginAtZero: true, grid: { color: 'rgba(75, 85, 99, 0.2)' }, ticks: { font: { size: 14, weight: 'bold' } } }, x: { grid: { display: false }, ticks: { font: { size: 12, weight: 'bold' } } } },
                     animation: { duration: 500 }
                 }
             });
@@ -861,6 +892,159 @@
             chartInstance.data.datasets[0].data = CANDIDATES.map(c => c.votes);
             chartInstance.data.labels = CANDIDATES.map(c => `No. ${c.no} - ${c.name}`);
             chartInstance.update();
+        }
+
+        // ==========================================
+        // FITUR TAMBAHAN: UPLOAD MASSAL & CETAK KARTU
+        // ==========================================
+
+        function openFormUploadMassal() {
+            const formHtml = `
+                <div class="space-y-4">
+                    <p class="text-sm text-gray-600">Gunakan file CSV/TXT (satu nama per baris). Sistem otomatis membuatkan Token unik.</p>
+                    <button onclick="downloadTemplateCSV()" class="text-blue-600 text-sm font-semibold hover:underline">Download Template (.csv)</button>
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-1">Upload File (.csv atau .txt)</label>
+                        <input type="file" id="file-massal" accept=".csv, .txt" class="w-full border p-2 rounded">
+                    </div>
+                    <button onclick="prosesUploadMassal()" class="w-full bg-green-600 hover:bg-green-700 text-white font-bold py-3 rounded mt-2">Mulai Proses Massal</button>
+                </div>`;
+            showFormModal("Upload Pemilih Massal", formHtml);
+        }
+
+        function downloadTemplateCSV() {
+            const csvContent = "data:text/csv;charset=utf-8,Nama Pemilih\nSiswa Pertama\nSiswa Kedua\nSiswa Ketiga";
+            const encodedUri = encodeURI(csvContent);
+            const link = document.createElement("a");
+            link.setAttribute("href", encodedUri);
+            link.setAttribute("download", "template_pemilih.csv");
+            document.body.appendChild(link);
+            link.click(); document.body.removeChild(link);
+        }
+
+        async function prosesUploadMassal() {
+            const fileInput = document.getElementById('file-massal');
+            if (!fileInput.files.length) return showToast("Pilih file terlebih dahulu!", "error");
+            
+            const file = fileInput.files[0];
+            const reader = new FileReader();
+            
+            reader.onload = async function(e) {
+                const text = e.target.result;
+                const lines = text.split(/\r?\n/).filter(l => l.trim().length > 0);
+                
+                let startIndex = 0; // Jika baris pertama mengandung kata "nama", lewati (dianggap Header)
+                if(lines[0].toLowerCase().includes("nama")) startIndex = 1;
+                
+                const votersToUpload = [];
+                for(let i=startIndex; i<lines.length; i++) {
+                    const cleanName = lines[i].replace(/,/g, '').trim(); 
+                    if(cleanName) {
+                        const tokenStr = Math.floor(100000 + Math.random() * 900000).toString();
+                        votersToUpload.push({ name: cleanName, token: tokenStr });
+                    }
+                }
+                
+                if(votersToUpload.length === 0) return showToast("Tidak ada nama ditemukan", "error");
+                
+                showLoading(`Mengunggah ${votersToUpload.length} pemilih...`);
+                try {
+                    const res = await fetchAPI('admin_add_pemilih_massal', { voters: votersToUpload });
+                    if(res.success) {
+                        closeFormModal();
+                        await fetchAdminData();
+                        showToast(`${votersToUpload.length} Pemilih berhasil didaftarkan!`, "success");
+                    } else { showToast(res.message, "error"); }
+                } catch(err) { hideLoading(); showToast("Gagal mendaftar masal", "error"); }
+            };
+            reader.readAsText(file);
+        }
+
+        function cetakKartuPemilih() {
+            if(VOTERS.length === 0) return showToast("Data pemilih kosong!", "error");
+            showLoading("Membuat PDF Kartu...");
+            
+            setTimeout(() => {
+                const { jsPDF } = window.jspdf;
+                const doc = new jsPDF('p', 'mm', 'a4'); // Kertas A4 (210 x 297 mm)
+                
+                const cardW = 100; // Lebar 10 cm
+                const cardH = 50;  // Tinggi 5 cm
+                const marginX = 5; // Margin kiri dan antar kolom
+                const marginY = 10;// Margin Atas
+                
+                let x = marginX;
+                let y = marginY;
+                let count = 0;
+                
+                // Gunakan daftar dari state saat ini
+                const votersToPrint = [...VOTERS].reverse(); 
+                
+                votersToPrint.forEach((v, index) => {
+                    // Maksimal 10 kartu per halaman (2 kolom x 5 baris)
+                    if (count === 10) { 
+                        doc.addPage();
+                        x = marginX; y = marginY; count = 0;
+                    }
+                    
+                    // Buat Kotak Kartu
+                    doc.setDrawColor(50);
+                    doc.setLineWidth(0.5);
+                    doc.rect(x, y, cardW, cardH);
+                    
+                    // Header Kartu
+                    doc.setFontSize(11);
+                    doc.setFont("helvetica", "bold");
+                    doc.text("KARTU PEMILIH E-VOTING", x + (cardW/2), y + 7, { align: "center" });
+                    
+                    doc.setFontSize(9);
+                    doc.setFont("helvetica", "normal");
+                    let schoolName = APP_SETTINGS.sekolah || "Nama Sekolah";
+                    if(schoolName.length > 40) schoolName = schoolName.substring(0, 40) + "...";
+                    doc.text(schoolName, x + (cardW/2), y + 12, { align: "center" });
+                    
+                    doc.setLineWidth(0.2);
+                    doc.line(x + 5, y + 15, x + cardW - 5, y + 15);
+                    
+                    // Konten Pemilih
+                    doc.setFontSize(9);
+                    doc.text("Nama Pemilih:", x + 5, y + 23);
+                    doc.setFontSize(11);
+                    doc.setFont("helvetica", "bold");
+                    let shortName = v.name.length > 25 ? v.name.substring(0, 25) + "..." : v.name;
+                    doc.text(shortName, x + 5, y + 28);
+                    
+                    doc.setFontSize(9);
+                    doc.setFont("helvetica", "normal");
+                    doc.text("Token Akses:", x + 5, y + 38);
+                    
+                    // Kotak Token
+                    doc.setDrawColor(0);
+                    doc.setFillColor(240, 240, 240);
+                    doc.rect(x + 30, y + 34, 45, 8, 'FD'); // Filled Rectangle
+                    doc.setFontSize(12);
+                    doc.setFont("courier", "bold");
+                    doc.text(v.token, x + 52.5, y + 40, { align: "center" });
+                    
+                    // Footer Kartu
+                    doc.setFontSize(7);
+                    doc.setFont("helvetica", "italic");
+                    doc.text("Harap jaga kerahasiaan token ini.", x + (cardW/2), y + 47, { align: "center" });
+                    
+                    // Pergeseran Koordinat untuk Kartu Berikutnya
+                    count++;
+                    if (count % 2 === 0) {
+                        x = marginX; // Kembali ke kiri
+                        y += cardH;  // Turun ke baris baru
+                    } else {
+                        x += cardW;  // Geser ke kanan (Kolom 2)
+                    }
+                });
+                
+                doc.save("Kartu_Pemilih_Massal.pdf");
+                hideLoading();
+                showToast("Kartu Pemilih berhasil diunduh");
+            }, 1000);
         }
     </script>
 </body>
