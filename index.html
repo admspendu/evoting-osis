@@ -197,6 +197,7 @@
                                     <tr class="text-gray-600 text-sm uppercase tracking-wider">
                                         <th class="p-4 font-semibold border-b">No</th>
                                         <th class="p-4 font-semibold border-b">Nama Pemilih</th>
+                                        <th class="p-4 font-semibold border-b">Kelas</th>
                                         <th class="p-4 font-semibold border-b text-center">Token</th>
                                         <th class="p-4 font-semibold border-b text-center">Status</th>
                                         <th class="p-4 font-semibold border-b text-center">Aksi</th>
@@ -511,7 +512,7 @@
                             </div>
                             <div class="mt-2 flex gap-2">
                                 <button onclick='openFormEditKandidat(${JSON.stringify(k).replace(/'/g, "&#39;")})' class="text-xs bg-gray-100 hover:bg-gray-200 px-3 py-1.5 rounded text-gray-700 font-medium">Edit</button>
-                                <button onclick="hapusKandidat('${k.rowIndex}', '${k.name}')" class="text-xs bg-red-50 hover:bg-red-100 px-3 py-1.5 rounded text-red-600 font-medium">Hapus</button>
+                                <button onclick="hapusKandidat('${k.rowIndex}', '${k.name.replace(/'/g, "\\'")}')" class="text-xs bg-red-50 hover:bg-red-100 px-3 py-1.5 rounded text-red-600 font-medium">Hapus</button>
                             </div>
                         </div>
                     </div>`;
@@ -520,7 +521,7 @@
 
         function renderVotersTable(filterText = "") {
             const tbody = document.getElementById('admin-voters-tbody'); tbody.innerHTML = '';
-            const filtered = [...VOTERS].reverse().filter(v => v.name.toLowerCase().includes(filterText.toLowerCase()) || v.token.toLowerCase().includes(filterText.toLowerCase()));
+            const filtered = [...VOTERS].reverse().filter(v => v.name.toLowerCase().includes(filterText.toLowerCase()) || v.token.toLowerCase().includes(filterText.toLowerCase()) || (v.kelas && v.kelas.toLowerCase().includes(filterText.toLowerCase())));
             document.getElementById('admin-total-voters').innerText = VOTERS.length;
             
             filtered.forEach((v, index) => {
@@ -530,11 +531,12 @@
                     <tr class="hover:bg-gray-50 border-b">
                         <td class="p-4 text-gray-600">${origIndex}</td>
                         <td class="p-4 font-medium text-gray-800">${v.name}</td>
+                        <td class="p-4 text-gray-600">${v.kelas || '-'}</td>
                         <td class="p-4 text-center"><code class="bg-gray-100 px-2 py-1 rounded text-sm font-mono font-bold tracking-widest">${v.token}</code></td>
                         <td class="p-4 text-center">${statusBadge}</td>
                         <td class="p-4 text-center flex justify-center gap-2">
-                            <button onclick="openFormEditPemilih('${v.rowIndex}', '${v.name}')" class="text-blue-500 hover:text-blue-700 text-sm font-medium">Edit</button>
-                            <button onclick="hapusPemilih('${v.rowIndex}', '${v.name}')" class="text-red-500 hover:text-red-700 text-sm font-medium">Hapus</button>
+                            <button onclick="openFormEditPemilih('${v.rowIndex}', '${v.name.replace(/'/g, "\\'")}', '${(v.kelas || '').replace(/'/g, "\\'")}')" class="text-blue-500 hover:text-blue-700 text-sm font-medium">Edit</button>
+                            <button onclick="hapusPemilih('${v.rowIndex}', '${v.name.replace(/'/g, "\\'")}')" class="text-red-500 hover:text-red-700 text-sm font-medium">Hapus</button>
                         </td>
                     </tr>`;
             });
@@ -668,6 +670,8 @@
                     <p class="text-sm text-gray-600 mb-2">Token unik akan digenerate otomatis.</p>
                     <div><label class="text-sm font-medium text-gray-700">Nama Pemilih</label>
                     <input type="text" id="f-p-nama" required class="w-full border p-2 rounded outline-none" placeholder="Masukkan nama..."></div>
+                    <div><label class="text-sm font-medium text-gray-700">Kelas</label>
+                    <input type="text" id="f-p-kelas" required class="w-full border p-2 rounded outline-none" placeholder="Masukkan kelas..."></div>
                     <button type="submit" class="w-full bg-blue-600 text-white font-bold py-3 rounded mt-2">Simpan Pemilih</button>
                 </form>`;
             showFormModal("Pendaftaran Pemilih", formHtml);
@@ -678,16 +682,22 @@
             const tokenStr = Math.floor(100000 + Math.random() * 900000).toString();
             showLoading("Menyimpan...");
             try {
-                const res = await fetchAPI('admin_add_pemilih', { token: tokenStr, name: document.getElementById('f-p-nama').value });
+                const res = await fetchAPI('admin_add_pemilih', { 
+                    token: tokenStr, 
+                    name: document.getElementById('f-p-nama').value,
+                    kelas: document.getElementById('f-p-kelas').value
+                });
                 if (res.success) { closeFormModal(); await fetchAdminData(); showToast("Pemilih didaftarkan!", "success"); }
             } catch(err) { hideLoading(); showToast("Gagal mendaftar", "error"); }
         }
 
-        function openFormEditPemilih(rowIndex, currentName) {
+        function openFormEditPemilih(rowIndex, currentName, currentKelas) {
             const formHtml = `
                 <form onsubmit="submitEditPemilih(event, '${rowIndex}')" class="space-y-4">
                     <div><label class="text-sm font-medium text-gray-700">Nama Pemilih</label>
                     <input type="text" id="e-p-nama" required class="w-full border p-2 rounded" value="${currentName}"></div>
+                    <div><label class="text-sm font-medium text-gray-700">Kelas</label>
+                    <input type="text" id="e-p-kelas" required class="w-full border p-2 rounded" value="${currentKelas}"></div>
                     <button type="submit" class="w-full bg-blue-600 text-white font-bold py-3 rounded mt-2">Update Pemilih</button>
                 </form>`;
             showFormModal("Edit Pemilih", formHtml);
@@ -697,7 +707,11 @@
             e.preventDefault();
             showLoading("Mengupdate...");
             try {
-                const res = await fetchAPI('admin_edit_pemilih', { rowIndex: rowIndex, name: document.getElementById('e-p-nama').value });
+                const res = await fetchAPI('admin_edit_pemilih', { 
+                    rowIndex: rowIndex, 
+                    name: document.getElementById('e-p-nama').value,
+                    kelas: document.getElementById('e-p-kelas').value
+                });
                 if (res.success) { closeFormModal(); await fetchAdminData(); showToast("Pemilih diupdate!", "success"); }
             } catch(err) { hideLoading(); showToast("Gagal update", "error"); }
         }
@@ -779,7 +793,7 @@
                                 <h4 class="text-xs font-bold text-blue-600 mb-1 uppercase tracking-wider">Misi</h4>
                                 <ul class="text-gray-600 text-sm list-disc pl-4 space-y-1">${misiList}</ul>
                             </div>
-                            <button onclick="castVote('${k.id || k.rowIndex}', '${k.name}')" class="w-full mt-2 bg-blue-600 hover:bg-blue-700 text-white font-bold py-3 rounded-xl text-lg shadow-md flex justify-center items-center gap-2">COBLOS</button>
+                            <button onclick="castVote('${k.id || k.rowIndex}', '${k.name.replace(/'/g, "\\'")}')" class="w-full mt-2 bg-blue-600 hover:bg-blue-700 text-white font-bold py-3 rounded-xl text-lg shadow-md flex justify-center items-center gap-2">COBLOS</button>
                         </div>
                     </div>`;
             });
@@ -835,6 +849,7 @@
             carouselInterval = setInterval(() => { if(CANDIDATES.length > 0) { currentCarouselIndex = (currentCarouselIndex + 1) % CANDIDATES.length; renderCarouselItem(); } }, 12000); 
 
             clearInterval(dashboardUpdateInterval);
+            // Polling interval diringankan menjadi 60000ms (1 Menit)
             dashboardUpdateInterval = setInterval(() => { fetchDashboardData(); }, 60000); 
         }
 
@@ -901,7 +916,7 @@
         function openFormUploadMassal() {
             const formHtml = `
                 <div class="space-y-4">
-                    <p class="text-sm text-gray-600">Gunakan file CSV/TXT (satu nama per baris). Sistem otomatis membuatkan Token unik.</p>
+                    <p class="text-sm text-gray-600">Gunakan file CSV/TXT (Pola: Nama Pemilih,Kelas). Sistem otomatis membuatkan Token unik.</p>
                     <button onclick="downloadTemplateCSV()" class="text-blue-600 text-sm font-semibold hover:underline">Download Template (.csv)</button>
                     <div>
                         <label class="block text-sm font-medium text-gray-700 mb-1">Upload File (.csv atau .txt)</label>
@@ -913,7 +928,7 @@
         }
 
         function downloadTemplateCSV() {
-            const csvContent = "data:text/csv;charset=utf-8,Nama Pemilih\nSiswa Pertama\nSiswa Kedua\nSiswa Ketiga";
+            const csvContent = "data:text/csv;charset=utf-8,Nama Pemilih,Kelas\nSiswa Pertama,XII MIPA 1\nSiswa Kedua,XII MIPA 2\nSiswa Ketiga,XII IPS 1";
             const encodedUri = encodeURI(csvContent);
             const link = document.createElement("a");
             link.setAttribute("href", encodedUri);
@@ -938,14 +953,17 @@
                 
                 const votersToUpload = [];
                 for(let i=startIndex; i<lines.length; i++) {
-                    const cleanName = lines[i].replace(/,/g, '').trim(); 
+                    const parts = lines[i].split(','); 
+                    const cleanName = parts[0] ? parts[0].trim() : '';
+                    const cleanKelas = parts.length > 1 ? parts[1].trim() : '';
+
                     if(cleanName) {
                         const tokenStr = Math.floor(100000 + Math.random() * 900000).toString();
-                        votersToUpload.push({ name: cleanName, token: tokenStr });
+                        votersToUpload.push({ name: cleanName, kelas: cleanKelas, token: tokenStr });
                     }
                 }
                 
-                if(votersToUpload.length === 0) return showToast("Tidak ada nama ditemukan", "error");
+                if(votersToUpload.length === 0) return showToast("Tidak ada data ditemukan", "error");
                 
                 showLoading(`Mengunggah ${votersToUpload.length} pemilih...`);
                 try {
@@ -1007,24 +1025,33 @@
                     doc.line(x + 5, y + 15, x + cardW - 5, y + 15);
                     
                     // Konten Pemilih
-                    doc.setFontSize(9);
-                    doc.text("Nama Pemilih:", x + 5, y + 23);
-                    doc.setFontSize(11);
+                    doc.setFontSize(8);
+                    doc.text("Nama:", x + 5, y + 21);
+                    doc.setFontSize(10);
                     doc.setFont("helvetica", "bold");
-                    let shortName = v.name.length > 25 ? v.name.substring(0, 25) + "..." : v.name;
-                    doc.text(shortName, x + 5, y + 28);
+                    let shortName = v.name.length > 20 ? v.name.substring(0, 20) + "..." : v.name;
+                    doc.text(shortName, x + 5, y + 25);
                     
-                    doc.setFontSize(9);
+                    doc.setFontSize(8);
                     doc.setFont("helvetica", "normal");
-                    doc.text("Token Akses:", x + 5, y + 38);
+                    doc.text("Kelas:", x + 5, y + 30);
+                    doc.setFontSize(10);
+                    doc.setFont("helvetica", "bold");
+                    let kelasStr = v.kelas || "-";
+                    if(kelasStr.length > 20) kelasStr = kelasStr.substring(0, 20) + "...";
+                    doc.text(kelasStr, x + 5, y + 34);
+                    
+                    doc.setFontSize(8);
+                    doc.setFont("helvetica", "normal");
+                    doc.text("Token:", x + 5, y + 41);
                     
                     // Kotak Token
                     doc.setDrawColor(0);
                     doc.setFillColor(240, 240, 240);
-                    doc.rect(x + 30, y + 34, 45, 8, 'FD'); // Filled Rectangle
-                    doc.setFontSize(12);
+                    doc.rect(x + 18, y + 36, 45, 7, 'FD'); // Filled Rectangle
+                    doc.setFontSize(11);
                     doc.setFont("courier", "bold");
-                    doc.text(v.token, x + 52.5, y + 40, { align: "center" });
+                    doc.text(v.token, x + 40.5, y + 41, { align: "center" });
                     
                     // Footer Kartu
                     doc.setFontSize(7);
